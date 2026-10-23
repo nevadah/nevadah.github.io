@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import { getProfile } from '../lib/content';
+
+interface Props {
+  title?: string;       // page title; the site name is appended
+  description?: string; // defaults to the profile headline
+}
+const profile = await getProfile();
+const { title } = Astro.props;
+const description = Astro.props.description ?? `${profile.name}, ${profile.headline}.`;
+const fullTitle = title ? `${title} · ${profile.name}` : `${profile.name}, ${profile.headline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.headline,
+  url: new URL('/', Astro.site).href,
+  sameAs: profile.links.map((l) => l.url),
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{fullTitle}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta property="og:site_name" content={profile.name}>
+  <meta property="og:title" content={fullTitle}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonical}>
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(person)} />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container bar">
+      <a class="brand" href="/">{profile.name}</a>
+      <nav aria-label="Site">
+        <a href="/#projects">Projects</a>
+        <a href="/#writing">Writing</a>
+        <a href="/#experience">Experience</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <slot />
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        {profile.links.map((l, i) => <>{i > 0 && ' · '}<a href={l.url}>{l.label}</a></>)}
+      </p>
+      <p>This site has no tracking, no cookies, and no ads.</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  .site-header { border-bottom: 1px solid var(--border); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 64px; flex-wrap: wrap; }
+  .brand { color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.15rem; }
+  nav { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+  nav a { color: var(--text); text-decoration: none; padding: 0.5rem 0.75rem; border-radius: 6px; }
+  nav a:hover { background: var(--panel); }
+  main { padding: 3rem 0 4rem; }
+  .site-footer { border-top: 1px solid var(--border); color: var(--text-2); font-size: 0.9rem; padding: 1.5rem 0 2.5rem; }
+  .site-footer p { margin: 0.4rem 0; }
+</style>

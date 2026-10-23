@@ -1,0 +1,53 @@
+/* Placeholder theme. Replace once the visual design is settled. */
+:root {
+  color-scheme: light dark;
+  --bg: #FFFFFF;
+  --panel: #F2F3F5;
+  --border: #D8DBE0;
+  --text: #1B1D21;
+  --text-2: #5A5F69;
+  --accent: #1F4E79;
+  --accent-text: #1F5C99;
+  --on-accent: #FFFFFF;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Consolas, monospace;
+  --measure: 44rem;
+  --wide: 68rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17191C;
+    --panel: #22252A;
+    --border: #393D44;
+    --text: #ECEDEF;
+    --text-2: #A3A8B2;
+    --accent: #4A86C5;
+    --accent-text: #8DBDF0;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--accent-text); text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+h1, h2, h3 { line-height: 1.2; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 2.75rem); margin: 0 0 0.5rem; }
+h2 { font-size: 1.5rem; margin: 3rem 0 1rem; }
+h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+code { font-family: var(--font-mono); font-size: 0.9em; background: var(--panel); padding: 0.1em 0.35em; border-radius: 4px; }
+
+.skip { position: absolute; left: -999px; top: 0; background: var(--accent); color: var(--on-accent); padding: 0.5rem 1rem; z-index: 10; }
+.skip:focus { left: 1rem; top: 1rem; }
+
+.container { width: 100%; max-width: var(--wide); margin: 0 auto; padding: 0 1rem; }
+.meta { color: var(--text-2); font-size: 0.95rem; }

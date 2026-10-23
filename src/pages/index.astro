@@ -1,0 +1,86 @@
+---
+// Placeholder home page: proves the content pipeline and the deploy work.
+// The real design comes later.
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { getProfile, getExperience, getProjects, getArticles, formatMonth } from '../lib/content';
+
+const profile = await getProfile();
+const projects = await getProjects();
+const articles = await getArticles();
+const roles = await Promise.all(
+  (await getExperience()).map(async (role) => ({ role, Content: (await render(role)).Content })),
+);
+---
+<Base>
+  <div class="container narrow">
+    <section class="intro">
+      <h1>{profile.name}</h1>
+      <p class="headline">{profile.headline}</p>
+      <p>{profile.summary}</p>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      {projects.length === 0 && <p class="empty">Nothing here yet.</p>}
+      <ul class="cards">
+        {projects.map(({ data }) => (
+          <li>
+            <h3>{data.title}</h3>
+            <p>{data.description}</p>
+            {data.tech.length > 0 && <p class="meta">{data.tech.join(' · ')}</p>}
+            <p class="links">
+              <a href={data.repo}>Source</a>
+              {data.url && <a href={data.url}>Website</a>}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="writing">
+      <h2>Writing</h2>
+      {articles.length === 0 && <p class="empty">Nothing here yet.</p>}
+      <ul class="list">
+        {articles.map(({ data }) => (
+          <li>
+            <a href={data.url}>{data.title}</a>
+            <span class="meta"> · {data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</span>
+            <p>{data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="experience">
+      <h2>Experience</h2>
+      {roles.length === 0 && <p class="empty">Nothing here yet.</p>}
+      {roles.map(({ role: { data }, Content }) => (
+        <article class="role">
+          <h3>{data.title}, {data.company}</h3>
+          <p class="meta">{formatMonth(data.start)} to {formatMonth(data.end)}{data.location && ` · ${data.location}`}</p>
+          <p>{data.summary}</p>
+          <Content />
+        </article>
+      ))}
+    </section>
+  </div>
+</Base>
+
+<style>
+  .narrow { max-width: var(--measure); }
+  .intro { margin-bottom: 1rem; }
+  .headline { font-size: 1.3rem; color: var(--text-2); margin: 0 0 1rem; }
+  .cards { list-style: none; padding: 0; display: grid; gap: 1rem; }
+  .cards li { background: var(--panel); border-radius: 10px; padding: 1.25rem 1.4rem; }
+  .cards h3 { margin: 0 0 0.4rem; }
+  .cards p { margin: 0.4rem 0 0; }
+  .links { display: flex; gap: 1rem; }
+  .list { list-style: none; padding: 0; }
+  .list li { margin-bottom: 1.25rem; }
+  .list p { margin: 0.25rem 0 0; }
+  .role { margin-bottom: 2rem; }
+  .role h3 { margin-bottom: 0.25rem; }
+  .role .meta { margin: 0 0 0.5rem; }
+  .empty { color: var(--text-2); }
+</style>

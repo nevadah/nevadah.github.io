@@ -14,6 +14,13 @@ const fullTitle = title ? `${title} · ${profile.name}` : `${profile.name}, ${pr
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL(`/og/${Astro.props.image ?? 'home'}.png`, Astro.site);
 const imageAlt = `${profile.name}, ${profile.headline}`;
+const isHome = Astro.url.pathname === '/';
+const sections = [
+  ['experience', 'Experience'],
+  ['projects', 'Projects'],
+  ['writing', 'Writing'],
+  ['skills', 'Skills'],
+] as const;
 const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -45,17 +52,16 @@ const person = {
   <meta name="twitter:card" content="summary_large_image">
   <script type="application/ld+json" is:inline set:html={JSON.stringify(person)} />
 </head>
-<body>
+<body id="top">
   <a class="skip" href="#main">Skip to content</a>
-  <header class="page">
-    <div class="row bar">
-      {Astro.url.pathname === '/' ? <span></span> : <a class="home" href="/">{profile.name}</a>}
-      <nav aria-label="Site">
-        <a href="/#experience">Experience</a>
-        <a href="/#projects">Projects</a>
-        <a href="/#writing">Writing</a>
-        <a href="/#skills">Skills</a>
-      </nav>
+  <header class="site-header" data-home={isHome ? '' : undefined}>
+    <div class="page">
+      <div class="row bar">
+        <a class="home" href={isHome ? '#top' : '/'}>{profile.name}</a>
+        <nav aria-label="Site">
+          {sections.map(([id, label]) => <a href={`/#${id}`} data-section={id}>{label}</a>)}
+        </nav>
+      </div>
     </div>
   </header>
   <main id="main" class="page">
@@ -72,18 +78,67 @@ const person = {
       </div>
     </div>
   </footer>
+  <script>
+    // Sticky header: show a rule once the page scrolls, show the name once the
+    // page's own heading has scrolled away, and mark the section in view.
+    const header = document.querySelector<HTMLElement>('.site-header');
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('nav a[data-section]')];
+    const sections = links
+      .map((a) => document.getElementById(a.dataset.section!))
+      .filter((el): el is HTMLElement => el !== null);
+    const heading = document.querySelector('main h1');
+
+    let queued = false;
+    function update() {
+      queued = false;
+      if (!header) return;
+      header.toggleAttribute('data-scrolled', window.scrollY > 4);
+      if (heading) header.toggleAttribute('data-show-name', heading.getBoundingClientRect().bottom < header.offsetHeight);
+      // The current section is the last one whose top has passed just below the header.
+      const line = header.offsetHeight + 24;
+      let current: string | undefined;
+      for (const section of sections) if (section.getBoundingClientRect().top <= line) current = section.id;
+      // At the very bottom, the last sections may never reach that line; mark the last one.
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom && sections.length) current = sections[sections.length - 1].id;
+      for (const a of links) {
+        if (a.dataset.section === current) a.setAttribute('aria-current', 'location');
+        else a.removeAttribute('aria-current');
+      }
+    }
+    addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+    addEventListener('resize', update);
+    update();
+  </script>
 </body>
 </html>
 
 <style>
-  .bar { align-items: baseline; padding: 1.5rem 0 1rem; font-family: var(--font-ui); font-size: 0.9375rem; }
+  .site-header {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--paper);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .site-header[data-scrolled] { border-bottom-color: var(--rule); }
+  .bar { align-items: baseline; padding: 0.9rem 0; font-family: var(--font-ui); font-size: 0.9375rem; }
   .home { color: var(--ink); font-weight: 600; text-decoration: none; }
+  /* On the home page the name is already the page's heading, so the header
+     shows it only after that heading has scrolled out of view. */
+  .site-header[data-home] .home { visibility: hidden; opacity: 0; transition: opacity 0.2s, visibility 0.2s; }
+  .site-header[data-home][data-show-name] .home { visibility: visible; opacity: 1; }
   nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
   nav a { color: var(--quiet); text-decoration: none; }
   nav a:hover { color: var(--ink); text-decoration: underline; }
+  nav a[aria-current] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--link); text-decoration-thickness: 2px; text-underline-offset: 0.35em; }
+  @media (prefers-reduced-motion: reduce) { .site-header, .site-header .home { transition: none; } }
   main { padding-bottom: 3rem; }
   .foot { border-top: 1px solid var(--rule); padding: 1.5rem 0 3rem; font-family: var(--font-ui); font-size: 0.875rem; color: var(--quiet); }
   .foot p { margin: 0; }
   .links { list-style: none; padding: 0; margin: 0 0 0.5rem; display: flex; gap: 1.5rem; }
-  @media (max-width: 46rem) { .bar { row-gap: 0.5rem; } }
+  @media (max-width: 46rem) {
+    /* No room for the name beside the links on a phone. */
+    .site-header[data-home] .home { display: none; }
+    .site-header:not([data-home]) .bar { row-gap: 0.25rem; }
+  }
 </style>

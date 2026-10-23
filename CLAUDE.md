@@ -31,4 +31,4 @@ All content is data files in `src/content/`, validated by the schemas in `src/co
 - Every page needs a real `<title>`, a description, and Open Graph tags (from `Base.astro`), because links to this site get pasted into LinkedIn and email.
 - The link preview card (`src/lib/og.ts`, `src/pages/og/home.png.ts`) is generated at build time from `profile.json`; nothing to do by hand when the profile changes. A new page that needs its own card gets its own route under `src/pages/og/` and passes `image` to `Base.astro`.
 - Keep the structured data (`Person` in `Base.astro`) accurate.
-- The current design is a placeholder; larger visual changes are discussed with Nevada first.
+- The design is clean and text-first: a margin rail for section names and dates beside a reading column, Source Serif 4 and Public Sans, ink on white with one blue for links. Keep to it; larger visual changes are discussed with Nevada first.

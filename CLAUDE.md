@@ -11,7 +11,8 @@ Nevada Hamaker's personal website, at https://nevadah.github.io, built with Astr
 
 All content is data files in `src/content/`, validated by the schemas in `src/content.config.ts`. Pages read it through the helpers in `src/lib/content.ts`. Adding a role, project, or article means adding one file, not editing a component.
 
-- `profile.json`: name, headline, summary, location, and links (GitHub, LinkedIn, email). Used in the header, footer, page metadata, and structured data.
+- `profile.json`: name, headline, summary, location, links, skills, education, and `resume` (path to the PDF in `public/`). Used in the header, footer, page metadata, and structured data.
+- The resume PDF in `public/` is a copy with the phone number and email removed. When Nevada sends a new resume, remove them again (true redaction, not a cover-up) and check the text before replacing the file. Never publish his phone number or email.
 - `experience/`: one Markdown file per role, named `YYYY-MM-company.md` by start date. Frontmatter: `title`, `company`, `location?`, `start` and `end` as `YYYY-MM` (omit `end` for a current role), `summary`, `draft`. The body holds the bullets.
 - `projects/`: one file per project. Frontmatter: `title`, `description`, `repo`, `url?`, `tech`, `stack?` (a one-line summary of how it's built, shown instead of the tech list), `featured`, `order` (lower first), `draft`. The optional body is a fuller description of how it's built, shown under "How it's built".
 - `articles/`: one file per article. Frontmatter: `title`, `description`, `date`, `url` (where it was published), `draft`. The body is optional and can hold a full copy.

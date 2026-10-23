@@ -73,6 +73,7 @@ const person = {
       <div>
         <ul class="links">
           {profile.links.map((l) => <li><a href={l.url}>{l.label}</a></li>)}
+          {profile.resume && <li><a href={profile.resume}>Resume (PDF)</a></li>}
         </ul>
         <p>This site has no tracking, no cookies, and no ads.</p>
       </div>

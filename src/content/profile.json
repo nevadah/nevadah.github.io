@@ -4,14 +4,56 @@
   "summary": "I started in technical support, transitioned to software testing, and then to a full-time software development role. My experience spans back-end and front-end testing and development, web services, databases, cloud infrastructure, and use of AI coding tools. My recent work has focused on ecommerce platform customization, migration of services and databases to Google Cloud Platform, and full-stack development using Java, PHP, React, TypeScript, GraphQL, and MySQL.",
   "location": "Mill Creek, WA",
   "links": [
-    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/nevadahamaker" },
-    { "label": "GitHub", "url": "https://github.com/nevadah" }
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/nevadahamaker"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/nevadah"
+    }
   ],
   "skills": [
-    { "group": "Programming", "items": ["PHP", "Java", "Spring Boot", "JavaScript/TypeScript"] },
-    { "group": "Web & Cloud", "items": ["React", "Magento", "GraphQL", "Google Cloud Platform", "Docker", "Kubernetes", "Terraform", "Kafka"] },
-    { "group": "Databases", "items": ["MySQL/MariaDB", "Cloud SQL"] },
-    { "group": "DevOps", "items": ["CI/CD", "GitHub Actions", "New Relic"] }
+    {
+      "group": "Programming",
+      "items": [
+        "PHP",
+        "Java",
+        "Spring Boot",
+        "JavaScript/TypeScript"
+      ]
+    },
+    {
+      "group": "Web & Cloud",
+      "items": [
+        "React",
+        "Magento",
+        "GraphQL",
+        "Google Cloud Platform",
+        "Docker",
+        "Kubernetes",
+        "Terraform",
+        "Kafka"
+      ]
+    },
+    {
+      "group": "Databases",
+      "items": [
+        "MySQL/MariaDB",
+        "Cloud SQL"
+      ]
+    },
+    {
+      "group": "DevOps",
+      "items": [
+        "CI/CD",
+        "GitHub Actions",
+        "New Relic"
+      ]
+    }
   ],
-  "education": ["Bachelor of Science degree in Math/Computer Science, Western Washington University, 1993"]
+  "education": [
+    "Bachelor of Science degree in Math/Computer Science, Western Washington University, 1993"
+  ],
+  "resume": "/Nevada-Hamaker-Resume.pdf"
 }

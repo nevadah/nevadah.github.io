@@ -24,6 +24,7 @@ const articleDate = (d: Date) =>
       <p class="role">{profile.headline}{profile.location && <>, {profile.location}</>}</p>
       <p class="lead">{lead}</p>
       {rest.length > 0 && <p class="rest">{rest.join(' ')}</p>}
+      {profile.resume && <p class="download"><a href={profile.resume}>Download my resume (PDF)</a></p>}
     </div>
   </section>
 
@@ -119,6 +120,7 @@ const articleDate = (d: Date) =>
     text-wrap: pretty;
   }
   .rest { margin: 0; color: var(--ink); text-wrap: pretty; }
+  .download { font-family: var(--font-ui); font-size: 0.9375rem; margin: 1.5rem 0 0; }
 
   .block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-bottom: 1.5rem; }
   h2.rail { font-size: 0.875rem; font-weight: 600; color: var(--ink); margin: 0 0 1.5rem; padding: 0; }

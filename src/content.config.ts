@@ -21,6 +21,7 @@ const profile = defineCollection({
       .array(z.object({ group: z.string(), items: z.array(z.string()) }))
       .default([]),
     education: z.array(z.string()).default([]),
+    resume: z.string().optional(), // path to a downloadable PDF under public/
   }),
 });
 

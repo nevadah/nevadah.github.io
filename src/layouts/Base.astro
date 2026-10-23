@@ -39,39 +39,43 @@ const person = {
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="container bar">
-      <a class="brand" href="/">{profile.name}</a>
+  <header class="page">
+    <div class="row bar">
+      {Astro.url.pathname === '/' ? <span></span> : <a class="home" href="/">{profile.name}</a>}
       <nav aria-label="Site">
+        <a href="/#experience">Experience</a>
         <a href="/#projects">Projects</a>
         <a href="/#writing">Writing</a>
-        <a href="/#experience">Experience</a>
         <a href="/#skills">Skills</a>
       </nav>
     </div>
   </header>
-  <main id="main">
+  <main id="main" class="page">
     <slot />
   </main>
-  <footer class="site-footer">
-    <div class="container">
-      <p>
-        {profile.links.map((l, i) => <>{i > 0 && ' · '}<a href={l.url}>{l.label}</a></>)}
-      </p>
-      <p>This site has no tracking, no cookies, and no ads.</p>
+  <footer class="page">
+    <div class="row foot">
+      <div></div>
+      <div>
+        <ul class="links">
+          {profile.links.map((l) => <li><a href={l.url}>{l.label}</a></li>)}
+        </ul>
+        <p>This site has no tracking, no cookies, and no ads.</p>
+      </div>
     </div>
   </footer>
 </body>
 </html>
 
 <style>
-  .site-header { border-bottom: 1px solid var(--border); }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 64px; flex-wrap: wrap; }
-  .brand { color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.15rem; }
-  nav { display: flex; gap: 0.25rem; flex-wrap: wrap; }
-  nav a { color: var(--text); text-decoration: none; padding: 0.5rem 0.75rem; border-radius: 6px; }
-  nav a:hover { background: var(--panel); }
-  main { padding: 3rem 0 4rem; }
-  .site-footer { border-top: 1px solid var(--border); color: var(--text-2); font-size: 0.9rem; padding: 1.5rem 0 2.5rem; }
-  .site-footer p { margin: 0.4rem 0; }
+  .bar { align-items: baseline; padding: 1.5rem 0 1rem; font-family: var(--font-ui); font-size: 0.9375rem; }
+  .home { color: var(--ink); font-weight: 600; text-decoration: none; }
+  nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+  nav a { color: var(--quiet); text-decoration: none; }
+  nav a:hover { color: var(--ink); text-decoration: underline; }
+  main { padding-bottom: 3rem; }
+  .foot { border-top: 1px solid var(--rule); padding: 1.5rem 0 3rem; font-family: var(--font-ui); font-size: 0.875rem; color: var(--quiet); }
+  .foot p { margin: 0; }
+  .links { list-style: none; padding: 0; margin: 0 0 0.5rem; display: flex; gap: 1.5rem; }
+  @media (max-width: 46rem) { .bar { row-gap: 0.5rem; } }
 </style>

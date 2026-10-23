@@ -13,7 +13,7 @@ All content is data files in `src/content/`, validated by the schemas in `src/co
 
 - `profile.json`: name, headline, summary, location, and links (GitHub, LinkedIn, email). Used in the header, footer, page metadata, and structured data.
 - `experience/`: one Markdown file per role, named `YYYY-MM-company.md` by start date. Frontmatter: `title`, `company`, `location?`, `start` and `end` as `YYYY-MM` (omit `end` for a current role), `summary`, `draft`. The body holds the bullets.
-- `projects/`: one file per project. Frontmatter: `title`, `description`, `repo`, `url?`, `tech`, `featured`, `order` (lower first), `draft`.
+- `projects/`: one file per project. Frontmatter: `title`, `description`, `repo`, `url?`, `tech`, `stack?` (a one-line summary of how it's built, shown instead of the tech list), `featured`, `order` (lower first), `draft`. The optional body is a fuller description of how it's built, shown under "How it's built".
 - `articles/`: one file per article. Frontmatter: `title`, `description`, `date`, `url` (where it was published), `draft`. The body is optional and can hold a full copy.
 - `draft: true` keeps an entry off the site. Placeholder entries are drafts; delete them once real ones exist.
 

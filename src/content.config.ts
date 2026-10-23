@@ -47,6 +47,7 @@ const projects = defineCollection({
     repo: z.string().url(),
     url: z.string().url().optional(), // a live site or demo, if there is one
     tech: z.array(z.string()).default([]),
+    stack: z.string().optional(), // one-line summary of how it's built; shown instead of the tech list
     featured: z.boolean().default(false),
     order: z.number().int().default(100), // lower numbers are listed first
     draft: z.boolean().default(false),

@@ -4,7 +4,9 @@ import Base from '../layouts/Base.astro';
 import { getProfile, getExperience, getProjects, getArticles, formatMonth } from '../lib/content';
 
 const profile = await getProfile();
-const projects = await getProjects();
+const projects = await Promise.all(
+  (await getProjects()).map(async (project) => ({ project, Content: (await render(project)).Content, hasBody: project.body?.trim() })),
+);
 const articles = await getArticles();
 const roles = await Promise.all(
   (await getExperience()).map(async (role) => ({ role, Content: (await render(role)).Content, hasBody: role.body?.trim() })),
@@ -47,14 +49,22 @@ const articleDate = (d: Date) =>
 
   <section id="projects" class="block" aria-labelledby="projects-h">
     <div class="row"><h2 id="projects-h" class="rail">Projects</h2><div></div></div>
-    {projects.map(({ data }) => (
+    {projects.map(({ project: { data }, Content, hasBody }) => (
       <article class="row entry">
         <div class="rail"></div>
         <div>
           <h3>{data.url ? <a href={data.url}>{data.title}</a> : data.title}</h3>
           <p>{data.description}</p>
-          {data.tech.length > 0 && <p class="small">Built with {data.tech.join(', ')}.</p>}
+          {data.stack
+            ? <p class="small">{data.stack}</p>
+            : data.tech.length > 0 && <p class="small">Built with {data.tech.join(', ')}.</p>}
           <p class="small"><a href={data.repo}>Source code on GitHub</a></p>
+          {hasBody && (
+            <details>
+              <summary>How it's built</summary>
+              <div class="body"><Content /></div>
+            </details>
+          )}
         </div>
       </article>
     ))}
@@ -122,6 +132,7 @@ const articleDate = (d: Date) =>
   .small { font-family: var(--font-ui); font-size: 0.875rem; color: var(--quiet); margin-bottom: 0.4rem; }
 
   details { margin-top: -0.25rem; }
+  .small + details { margin-top: 0.5rem; }
   summary { font-family: var(--font-ui); font-size: 0.875rem; color: var(--link); cursor: pointer; width: fit-content; list-style: none; }
   summary::-webkit-details-marker { display: none; }
   summary::before { content: '+'; display: inline-block; width: 1em; font-weight: 600; }

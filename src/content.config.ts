@@ -17,6 +17,10 @@ const profile = defineCollection({
     links: z
       .array(z.object({ label: z.string(), url: z.string().url() }))
       .default([]),
+    skills: z
+      .array(z.object({ group: z.string(), items: z.array(z.string()) }))
+      .default([]),
+    education: z.array(z.string()).default([]),
   }),
 });
 
@@ -27,8 +31,8 @@ const experience = defineCollection({
     title: z.string(),
     company: z.string(),
     location: z.string().optional(),
-    start: z.string().regex(/^\d{4}-\d{2}$/, 'Use YYYY-MM'),
-    end: z.string().regex(/^\d{4}-\d{2}$/, 'Use YYYY-MM').optional(), // omit for a current role
+    start: z.string().regex(/^\d{4}(-\d{2})?$/, 'Use YYYY-MM, or YYYY if the month is unknown'),
+    end: z.string().regex(/^\d{4}(-\d{2})?$/, 'Use YYYY-MM, or YYYY').optional(), // omit for a current role
     summary: z.string(),
     draft: z.boolean().default(false),
   }),

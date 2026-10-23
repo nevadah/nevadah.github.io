@@ -30,10 +30,11 @@ export async function getArticles() {
   return articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
-/** "2022-03" → "Mar 2022"; no value → "Present". */
+/** "2022-03" → "Mar 2022"; "1996" → "1996"; no value → "Present". */
 export function formatMonth(value?: string) {
   if (!value) return 'Present';
   const [year, month] = value.split('-').map(Number);
+  if (!month) return String(year);
   return new Date(Date.UTC(year, month - 1)).toLocaleDateString('en-US', {
     month: 'short',
     year: 'numeric',

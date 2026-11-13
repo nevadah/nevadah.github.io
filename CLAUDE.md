@@ -1,11 +1,21 @@
 # nevadah.github.io — guide for Claude Code
 
-Nevada Hamaker's personal website, at https://nevadah.github.io, built with Astro and published to GitHub Pages from `main` (see `.github/workflows/deploy.yml`). It presents his experience, his GitHub projects, and the articles he has written, mostly on LinkedIn. It supports his job search, so accuracy matters more than polish.
+Nevada Hamaker's personal website, at https://nevadah.github.io, built with Astro and published to GitHub Pages whenever `main` changes (see `.github/workflows/deploy.yml`). It presents his experience, his GitHub projects, and the articles he has written, mostly on LinkedIn. It supports his job search, so accuracy matters more than polish.
 
 ## Commands
 
 - `npm ci` then `npm run dev` for a local server; `npm run build` must pass before pushing.
-- Pushing to `main` publishes the site within a few minutes. Treat a push as publishing.
+
+## How changes are made: always through a pull request
+
+Never commit or push to `main` directly. Anything that reaches `main` is published within a few minutes, and Nevada reviews every change before that happens.
+
+1. Start a branch from an up-to-date `main`: `content/<short-description>` for content, `site/<short-description>` for code, design, or configuration.
+2. Make the change. `npm run build` must pass; check any visual change in a browser at desktop and phone widths, in light and dark mode.
+3. Commit, push the branch, and open a pull request into `main`. The title says what changes on the site. The description lists the changes and quotes any new copy you wrote (article summaries, descriptions) in full, so Nevada can approve the wording there. If `gh pr create` isn't available, use the REST API: `gh api repos/nevadah/nevadah.github.io/pulls -f title=... -f head=<branch> -f base=main -f body=...`.
+4. Wait for the "Check build" workflow on the pull request to pass, then give Nevada the link.
+5. Don't merge it yourself. Nevada merges, and merging publishes. If he asks for changes, push more commits to the same branch.
+6. After he merges, confirm the "Deploy to GitHub Pages" run for the merge commit succeeded.
 
 ## How content works
 
@@ -23,7 +33,7 @@ All content is data files in `src/content/`, validated by the schemas in `src/co
 - **Never invent facts.** Employers, titles, dates, accomplishments, metrics, technologies, and article details come only from Nevada, his resume, or his own repositories and posts. If something is missing, leave a clearly marked placeholder or ask.
 - Text marked `PLACEHOLDER` is not final copy; Nevada rewrites it.
 - Voice: first person where it fits, plain and specific, no hype or filler.
-- Don't publish anything Nevada hasn't seen. New content goes in with `draft: true` unless he says otherwise.
+- Don't publish anything Nevada hasn't seen. The pull request is the review, so new content can go in ready to publish. Use `draft: true` only for an entry that should stay in the repository but off the site.
 
 ## Site rules
 

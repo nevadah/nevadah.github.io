@@ -3,10 +3,8 @@ title: Senior Software Design Engineer in Test
 company: Big Fish Games, Inc.
 start: 2010-11
 end: 2022-01
-summary: My first project was testing the Big Fish Games website, an ecommerce stack developed in-house for the downloadable games business, using a combination of manual and automated testing.
+summary: I tested the Big Fish Games ecommerce website and later the web services behind the growing mobile games business, covering player communications, marketing and promotions, player segmentation, and a high-volume Kafka event pipeline feeding a large, sharded MySQL database.
 ---
-
-Later, I transitioned to testing a considerable number of web services that were developed to support the growing mobile games business. These services supported player communications, marketing and promotions, and player segmentation. They also included a high-volume event data pipeline based on Kafka, including the services that received events from games and published them to event topics, the application that consumed those events and processed them, and the large, sharded MySQL database that stored the resulting data.
 
 My accomplishments in this role include:
 

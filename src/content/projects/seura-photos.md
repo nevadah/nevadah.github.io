@@ -1,6 +1,6 @@
 ---
 title: Seura Photos
-description: A free, open-source photo app for Windows and macOS, in the spirit of Picasa. Edits are kept in small files beside your photos, so originals are never changed.
+description: "A free, open-source photo app for Windows and macOS, in the spirit of Picasa. Edits are kept in small files beside your photos, so originals are never changed. Built AI-first: I make the product and design decisions and review the implementation, which Claude Code writes."
 repo: https://github.com/seura-photos/seura
 url: https://seuraphotos.app
 tech: [Tauri 2, Rust, React, TypeScript, WGSL, WebGPU, WebGL2, wgpu, Vite, Zustand, Project Fluent, GitHub Actions]
